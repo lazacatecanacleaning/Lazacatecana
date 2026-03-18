@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Zacatecana - Tidy Your Mind</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="icon" href="path/to/your/favicon.ico" type="image/x-icon">
+
+<style>
+/* ================================================================================
+SECTION 1: CSS DESIGN SYSTEM & RESET (Simplified to Light Theme)
+================================================================================
+*/
+:root {
+  /* Brand Colors */
+  --brand-brown: #5C4033; 
+  --brand-cream: #F5E8D8; 
+
+  /* Core Colors (Fixed Light Theme Values) */
+  --bg: #f9f9f9;
+  --text: #2c2c2c;
+  --secondary: #ffffff;
+  --border-light: #eee;
+  
+  /* Shared Accents */
+  --accent1: var(--brand-brown); 
+  --accent2: #8B4513; 
+  
+  --button-text: #fff;
+  --shadow: rgba(0,0,0,0.08);
+  --navbar-bg: rgba(255,255,255,0.95);
+
+  --transition-speed: 0.3s;
+  
+  /* Fluid Typography - Base font size */
+  font-size: calc(16px + 0.2vw);
+}
+
+/* Base Styles */
+* { box-sizing: border-box; margin:0; padding:0; font-family: 'Montserrat', sans-serif;}
+body { 
+  background: var(--bg); 
+  color: var(--text); 
+  line-height:1.6; 
+  scroll-behavior:smooth; 
+  transition: background var(--transition-speed), color var(--transition-speed);
+}
+a { text-decoration:none; color: inherit;}
+img { display:block; max-width:100%; }
+section { padding:100px 5%; position:relative;}
+h2 { font-size:clamp(2rem, 5vw, 2.8rem); margin-bottom:20px; color: var(--accent2); text-align:center; } 
+h3 { font-size:clamp(1.4rem, 3vw, 1.8rem); margin-bottom:15px; color: var(--accent1);}
+ul { padding-left: 20px; margin-bottom: 20px; }
+li { margin-bottom: 5px; }
+
+/* Expert Utility Class */
+.section-subtitle {
+    max-width:800px; 
+    margin:auto; 
+    text-align:center;
+    margin-bottom: 25px; 
+}
+
+/* Expert Button Class for Consistency */
+.primary-btn { 
+    padding:14px 30px; font-size:1.1rem; 
+    background:var(--accent1); color:var(--button-text); 
+    border:none; border-radius:8px; cursor:pointer; 
+    transition:0.3s; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+.primary-btn:hover { background: var(--accent2); transform:scale(1.05); box-shadow: 0 6px 15px rgba(0,0,0,0.3); }
+
+.small-book-btn {
+    padding: 10px 20px;
+    font-size: 1rem;
+    display: block; 
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* ================================================================================
+SECTION 2: NAVIGATION & HEADER STYLES
+================================================================================
+*/
+nav { 
+    display:flex; justify-content:space-between; align-items:center; 
+    padding:20px 5%; position:fixed; width:90%; max-width:1200px; 
+    top:20px; left:50%; transform:translateX(-50%); 
+    background:var(--navbar-bg); 
+    backdrop-filter:blur(8px); 
+    border-radius:10px; z-index:1000; 
+    box-shadow:0 5px 15px var(--shadow); 
+    transition:all var(--transition-speed) ease;
+}
+nav.shrink { 
+    padding:10px 5%; 
+    top:0; 
+    width:100%; 
+    max-width: none; 
+    transform:translateX(0); 
+    border-radius:0; 
+    box-shadow:0 3px 10px var(--shadow);
+}
+nav img.logo { height:50px; transition:height var(--transition-speed); object-fit: contain; } 
+nav.shrink img.logo { height:40px;}
+
+nav .menu a { 
+    margin-left:25px; 
+    font-weight:600; 
+    color: var(--text); 
+    transition: color var(--transition-speed);
+    position:relative; 
+}
+nav .menu a::after {
+    content:''; position:absolute; bottom:-5px; left:0;
+    width:0; height:2px; background:var(--accent1);
+    transition:width var(--transition-speed) ease;
+}
+nav .menu a:hover::after, nav .menu a.active::after { width:100%; }
+nav .menu a.active { color: var(--accent1);}
+nav .menu a:hover { color: var(--accent2);}
+
+/* Hero Section */
+.hero { 
+    position:relative; width:100%; height:90vh; overflow:hidden; display:flex; 
+    align-items:center; justify-content:center; text-align:center; 
+    padding-top: 200px; 
+    flex-direction: column; 
+}
+
+.slide { 
+    position:absolute; width:100%; height:100%; 
+    background-size:cover; background-position:center; 
+    opacity:0; transition: opacity 1.5s ease-in-out; 
+    top: 0; left: 0; 
+}
+.slide.active { opacity:1; }
+
+.hero::after { content:""; position:absolute; top:0; left:0; width:100%; height:100%; background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.6)); z-index:1;} 
+.hero-text { position:relative; z-index:2; color:#fff; max-width:700px; padding:30px; border-radius:12px; text-align:center;}
+.hero-text h1 { font-size:clamp(2.5rem, 6vw, 3.5rem); margin-bottom:20px; line-height:1.2; opacity:0; transform:translateY(20px);}
+.hero-text p { font-size:clamp(1rem, 2vw, 1.3rem); margin-bottom:25px; opacity:0; transform:translateY(20px);}
+
+
+/* Animation Classes */
+.animate-1 { animation:fadeInUp 1s ease forwards;}
+.animate-2 { animation:fadeInUp 1.3s ease forwards;}
+.animate-3 { animation:fadeInUp 1.6s ease forwards;}
+@keyframes fadeInUp {0% {opacity:0; transform:translateY(20px);} 100% {opacity:1; transform:translateY(0);}}
+
+/* FADE-UP ANIMATION CLASS for Intersection Observer */
+.fade-up { opacity:1 !important; transform:translateY(0) !important; transition: all 0.8s ease-out; }
+
+/* ================================================================================
+SECTION 3: CONTENT & COMPONENT STYLES
+================================================================================
+*/
+
+/* ABOUT Section - Gallery */
+.about .gallery { 
+    display:grid; 
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); 
+    gap:25px; 
+    margin-top:40px;
+}
+.about .gallery-item {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px var(--shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Added initial animation state for all gallery items */
+    opacity:0; transform:translateY(20px); 
+}
+.about .gallery-item:hover { transform: translateY(-5px); box-shadow: 0 10px 25px var(--shadow); }
+
+/* Before/After Slider Styling */
+.before-after-slider {
+    position: relative;
+    width: 100%;
+    height: 300px; 
+    overflow: hidden;
+    cursor: ew-resize;
+    user-select: none; 
+}
+.before-after-slider img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none; 
+}
+.after-image {
+    z-index: 2;
+}
+
+.slider-handle {
+    position: absolute;
+    top: 0; 
+    width: 4px;
+    height: 100%;
+    background: var(--accent1);
+    z-index: 3;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: none; 
+}
+.slider-handle::before {
+    content: '↔'; 
+    position: absolute;
+    font-size: 1.2rem;
+    color: white;
+    background: var(--accent1);
+    width: 30px; 
+    height: 30px;
+    border-radius: 50%;
+    border: 3px solid var(--secondary); 
+    box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* SERVICES Section */
+.services .service-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 40px;
+    text-align: left;
+}
+.services .service-item {
+    background: var(--secondary);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px var(--shadow);
+    flex: 1 1 300px; 
+    /* Added initial animation state */
+    opacity:0; transform:translateY(20px);
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-top: 4px solid var(--accent1);
+}
+.services .service-item:hover { transform: translateY(-5px); box-shadow: 0 10px 25px var(--shadow); }
+.services .service-item p { margin-bottom: 0; }
+.services .icon { font-size: 2rem; margin-bottom: 10px; color: var(--accent2); display: block; text-align: center; }
+
+/* PRICING Section */
+.pricing .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(250px,1fr)); gap:25px; margin-top:40px; text-align: left;}
+.pricing .card { 
+    background:var(--secondary); padding:35px; border-radius:15px; 
+    transition: transform 0.3s, box-shadow 0.3s; 
+    border:1px solid var(--border-light); 
+    /* Added initial animation state */
+    opacity:0; transform:translateY(20px);
+}
+.pricing .card:hover { transform:translateY(-5px); box-shadow:0 15px 25px var(--shadow);}
+.pricing .card h3 { margin-bottom:15px; font-size:1.4rem; color:var(--accent1);}
+.pricing .card p.price { margin-bottom:10px; color:var(--text); font-size:1.1rem; font-weight: 700; opacity:1; }
+.pricing .card ul { list-style: none; padding-left: 0; margin-bottom: 20px;}
+.pricing .card li { position: relative; padding-left: 25px; line-height: 1.4; margin-bottom: 8px;}
+.pricing .card li::before {
+    content: '✅'; 
+    position: absolute;
+    left: 0;
+    top: 0;
+    font-size: 0.9em;
+}
+
+/* Add-on Box Styles */
+.pricing .policy-details {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    text-align: left;
+}
+.pricing .policy-box {
+    padding: 25px;
+    background: var(--secondary);
+    border-radius: 10px;
+    border-left: 5px solid #A9A9A9; /* Neutral gray for add-ons */
+    box-shadow: 0 2px 10px var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    /* Added initial animation state */
+    opacity:0; transform:translateY(20px);
+}
+.pricing .policy-box:hover { transform:translateY(-3px); }
+.pricing .policy-box h4 {
+    font-size: 1.1rem;
+    color: var(--accent1);
+    margin-bottom: 10px;
+    font-weight: 700;
+}
+.pricing .policy-box p {
+    font-size: 0.95rem;
+    color: var(--text);
+    opacity: 0.85;
+}
+
+
+/* PRICING Section Toggle/Accordion Styles */
+.faq-toggle-title {
+    font-size:clamp(1.8rem, 4vw, 2.2rem);
+    text-align: center; 
+    margin-top: 60px;
+    color: var(--accent2);
+}
+
+.faq-container {
+    max-width: 700px;
+    margin: 20px auto 40px;
+}
+
+.accordion-item {
+    border: 1px solid var(--border-light);
+    margin-bottom: 10px;
+    border-radius: 8px;
+    overflow: hidden; 
+}
+
+.accordion-item__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 20px;
+    background-color: var(--secondary);
+    color: var(--text);
+    font-size: 1.1rem;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: background-color 0.3s ease;
+}
+
+.accordion-item__header:hover {
+    background-color: color-mix(in srgb, var(--secondary) 80%, var(--accent1) 10%);
+}
+.accordion-item__header h4 {
+    margin: 0; 
+    color: var(--text);
+}
+
+.icon-toggle {
+    font-size: 1.5rem;
+    line-height: 1;
+    transition: transform 0.3s ease;
+}
+
+.accordion-item__header[aria-expanded="true"] .icon-toggle {
+    transform: rotate(45deg); 
+}
+
+.accordion-item__content {
+    max-height: 0; 
+    overflow: hidden; 
+    transition: max-height 0.7s ease-in-out, padding 0.7s ease-in-out; 
+    background-color: var(--bg);
+    padding: 0 20px; 
+}
+
+.accordion-item__content.is-open {
+    max-height: 2000px; 
+    padding: 15px 20px; 
+}
+
+.accordion-item__content p {
+    margin: 0;
+}
+
+
+/* CONTACT Form (Google Form Embed) */
+.contact .google-form-container { 
+    max-width:600px; 
+    margin:auto; 
+    position: relative;
+    width: 100%;
+    height: 900px; 
+}
+.contact .google-form-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px var(--shadow);
+}
+
+/* ================================================================================
+SECTION 4: UTILITY & OVERLAY STYLES
+================================================================================
+*/
+
+/* FOOTER */
+footer { text-align:center; padding:25px; border-top:1px solid var(--border-light); font-size:0.9rem; color:var(--text); opacity:0.6; }
+
+/* Back to Top Button */
+#backToTopBtn {
+    display: none; 
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 99;
+    font-size: 1.5rem;
+    border: none;
+    outline: none;
+    background-color: var(--accent1);
+    color: white;
+    cursor: pointer;
+    padding: 10px 15px;
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.3s, transform 0.3s;
+}
+#backToTopBtn:hover {
+    background-color: var(--accent2);
+    transform: translateY(-3px);
+}
+
+
+/* ================================================================================
+SECTION 5: RESPONSIVE DESIGN (Media Queries)
+================================================================================
+*/
+@media (max-width:768px){ 
+    nav { 
+        flex-direction:column; align-items:flex-start; 
+        width:calc(100% - 40px); left:20px; 
+        transform:translateX(0); top:10px;
+    } 
+    nav.shrink { top:0; left:0; width:100%; transform: translateX(0); } 
+    nav .menu { margin-top:15px; display:flex; flex-wrap:wrap; justify-content:flex-start;}
+    nav .menu a { margin-left:0; margin-right:15px; margin-bottom:10px;}
+    section { padding:80px 5%;}
+    .before-after-slider { height: 250px; }
+    .hero { 
+        padding-top: 100px; 
+        height: 75vh; 
+    }
+}
+@media (max-width: 600px) {
+    .pricing .card, .services .service-item {
+        flex: 1 1 100%; 
+        max-width: 100%; 
+    }
+}
+</style>
+</head>
+<body> 
+
+<nav id="navbar">
+    <img src="https://via.placeholder.com/150x50?text=Your+Logo" alt="La Zacatecana Logo Placeholder" class="logo" aria-label="Home"> 
+    <div class="menu">
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#contact" id="bookNavBtn">Book</a>
+    </div>
+</nav>
+
+<section class="hero">
+    <div class="slide active" data-src="https://via.placeholder.com/1920x1080/5C4033/F5E8D8?text=Image+1:+Clean+Kitchen+View"></div>
+    <div class="slide" data-src="https://via.placeholder.com/1920x1080/8B4513/F5E8D8?text=Image+2:+Modern+Bathroom+Sparkling"></div>
+    <div class="slide" data-src="https://via.placeholder.com/1920x1080/4F3A2E/F5E8D8?text=Image+3:+Organized+Living+Area"></div>
+    <div class="hero-text">
+        <h1 class="animate-1">Tidy Your Mind</h1>
+        <p class="animate-2">Professional cleaning services that transform your space and give you back your free time.</p>
+        <button id="bookBtn" class="animate-3 primary-btn">Book Your Transformation Today</button>
+    </div>
+</section>
+
+<section class="about" id="about">
+    <h2>Before & After Gallery ✨</h2>
+    <p class="section-subtitle">
+        I believe that a clean home leads to a clear mind. My work is focused on **attention to detail, reliability, and creating a space you feel truly comfortable in**. See the transformative power of a professional clean below:
+    </p>
+    <div class="gallery">
+        <div class="gallery-item"> 
+            <h3>Bathroom Detail (Before/After)</h3>
+            <div class="before-after-slider" 
+                 data-before="https://via.placeholder.com/600x400/D9A983/ffffff?text=BEFORE:+Scummy+Shower+Door" 
+                 data-after="https://via.placeholder.com/600x400/96C296/ffffff?text=AFTER:+Crystal+Clear+Glass">
+                <img class="before-image" alt="Dirty Shower Glass" loading="lazy">
+                <img class="after-image" alt="Clean Shower Glass" loading="lazy">
+                <div class="slider-handle" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0" aria-label="Image comparison slider"></div>
+            </div>
+        </div>
+        
+        <div class="gallery-item">
+            <h3>Kitchen Detail (Before/After)</h3>
+            <div class="before-after-slider" 
+                 data-before="https://via.placeholder.com/600x400/A0856C/ffffff?text=BEFORE:+Greasy+Stove+Top" 
+                 data-after="https://via.placeholder.com/600x400/96C296/ffffff?text=AFTER:+Stove+Top+Restored">
+                <img class="before-image" alt="Dirty Stove Top" loading="lazy">
+                <img class="after-image" alt="Clean Stove Top" loading="lazy">
+                <div class="slider-handle" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0" aria-label="Image comparison slider"></div>
+            </div>
+        </div>
+
+        <div class="gallery-item">
+            <h3>Organizational Reset (Before/After)</h3>
+            <div class="before-after-slider" 
+                 data-before="https://via.placeholder.com/600x400/A0856C/ffffff?text=BEFORE:+Cluttered+Desk" 
+                 data-after="https://via.placeholder.com/600x400/96C296/ffffff?text=AFTER:+Organized+Desk">
+                <img class="before-image" alt="Cluttered Desk" loading="lazy">
+                <img class="after-image" alt="Organized Desk" loading="lazy">
+                <div class="slider-handle" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" tabindex="0" aria-label="Image comparison slider"></div>
+            </div>
+        </div>
+
+        <div class="gallery-item">
+            <h3>Sample Spotless Floor (Placeholder)</h3>
+            <img data-src="https://via.placeholder.com/600x400/e0e0e0/333333?text=Placeholder:+Shining+Floor+Mop+Photo" alt="Another cleaned area" loading="lazy">
+        </div>
+    </div>
+</section>
+
+---
+
+<section class="services" id="services">
+    <h2>Our Service Packages 🧹</h2>
+    <p class="section-subtitle" style="margin-bottom: 40px;">
+        Choose the package that best fits your home size and cleaning needs. All services are customizable upon request.
+    </p>
+    <div class="service-grid">
+        <div class="service-item">
+            <span class="icon">🏘️</span>
+            <h3>1-2 Bed Maintenance Clean</h3>
+            <p>**Summary:** Perfect for small apartments, condos, and bi-weekly clients. Focuses on essential upkeep, ensuring all highly-used areas are sanitized and tidy. Typically a 2-3 hour service.</p>
+            <p style="margin-top: 10px;">*Includes standard dusting, light kitchen/bath cleanup, and floor care.*</p>
+        </div>
+        <div class="service-item">
+            <span class="icon">🏡</span>
+            <h3>Full House Deep Clean (The Reset)</h3>
+            <p>**Summary:** Recommended for first-time clients or homes cleaned less than once a month. This is a top-to-bottom service that includes detailed attention to buildup, grout, baseboards, and hard-to-reach areas. Typically 4+ hours.</p>
+            <p style="margin-top: 10px;">*Includes everything in Maintenance, plus intensive scrubbing and detail work.*</p>
+        </div>
+        <div class="service-item">
+            <span class="icon">📦</span>
+            <h3>Move In/Out Cleaning</h3>
+            <p>**Summary:** A specialized service to prepare a property for sale or a new resident. This service is performed on empty homes and includes cleaning inside all cabinets, appliances, and all interior window glass. Typically 6+ hours.</p>
+            <p style="margin-top: 10px;">*Includes all Deep Clean items, plus empty cabinets, oven, and fridge interior.*</p>
+        </div>
+    </div>
+</section>
+
+---
+
+<section class="pricing" id="pricing">
+    <h2>Pricing, Add-ons & Policies 💵</h2>
+    
+    <div class="cards">
+        <div class="card">
+            <h3>1-2 Bed Maintenance</h3>
+            <p class="price">Starting from $100 - $150</p>
+            <ul>
+                <li>Light Dusting & Surface Wiping</li>
+                <li>Vacuuming & Mop Floors</li>
+                <li>Quick Kitchen & Bath Sanitization</li>
+                <li>No minimum time required</li>
+            </ul>
+            <button class="small-book-btn primary-btn" data-service="1-2 Bed Maintenance">Book Maintenance</button>
+        </div>
+        <div class="card">
+            <h3>Full House Deep Clean</h3>
+            <p class="price">Starting from $180 - $300</p>
+            <ul>
+                <li>Includes all Maintenance items, plus:</li>
+                <li>Detailed baseboards & trim cleaning</li>
+                <li>Heavy soap scum & lime scale removal</li>
+                <li>Inside microwave cleaning</li>
+            </ul>
+            <button class="small-book-btn primary-btn" data-service="Full House Deep Clean">Book Deep Clean</button>
+        </div>
+        <div class="card">
+            <h3>Move In/Out Service</h3>
+            <p class="price">Starting from $250</p>
+            <ul>
+                <li>Comprehensive empty-home clean</li>
+                <li>Inside all cabinets and drawers</li>
+                <li>Interior oven and refrigerator cleaning</li>
+                <li>Guaranteed to pass property inspection</li>
+            </ul>
+            <button class="small-book-btn primary-btn" data-service="Move In/Out">Book Move In/Out</button>
+        </div>
+    </div>
+
+    <h3 class="section-subtitle" style="margin-top: 60px; font-weight: 700;">Popular Add-ons (Expand Your Service)</h3>
+    <div class="policy-details" style="margin-top: 20px;">
+        <div class="policy-box">
+            <h4>Professional Organization</h4>
+            <p>Dedicated time spent tidying and organizing pantries, closets, desks, or storage areas. *($40 per hour)*</p>
+        </div>
+        <div class="policy-box">
+            <h4>Inside Oven Deep Clean</h4>
+            <p>Thorough degreasing and scrubbing of the oven interior and racks, removing baked-on residue. *($45 flat rate)*</p>
+        </div>
+        <div class="policy-box">
+            <h4>Interior Window Cleaning</h4>
+            <p>Cleaning all accessible interior window glass, frames, and tracks for maximum clarity. *(Quoted per window/pane)*</p>
+        </div>
+        <div class="policy-box">
+            <h4>Refrigerator Interior Clean</h4>
+            <p>Emptying, wiping down, and sanitizing all shelves, drawers, and freezer compartments inside the fridge. *($35 flat rate)*</p>
+        </div>
+    </div>
+
+
+    <h3 class="faq-toggle-title">Booking & Policy Details 📝</h3>
+    
+    <div class="faq-container">
+        <div class="accordion-item">
+            <button 
+                class="accordion-item__header" 
+                aria-expanded="false" 
+                aria-controls="policy-deposit"
+                id="header-deposit"
+            >
+                <h4>Deposit Policy (Sample)</h4>
+                <span class="icon-toggle">+</span>
+            </button>
+            <div 
+                class="accordion-item__content" 
+                id="policy-deposit" 
+                aria-labelledby="header-deposit"
+                hidden
+            >
+                <p>**SAMPLE TEXT:** A **$50 non-refundable deposit** is required to confirm all Deep and Move In/Out cleanings to secure the time slot. This amount will be credited toward your final bill, and the remaining balance is due upon completion of the service.</p>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <button 
+                class="accordion-item__header" 
+                aria-expanded="false" 
+                aria-controls="policy-cancellation"
+                id="header-cancellation"
+            >
+                <h4>Cancellation Policy (Sample)</h4>
+                <span class="icon-toggle">+</span>
+            </button>
+            <div 
+                class="accordion-item__content" 
+                id="policy-cancellation" 
+                aria-labelledby="header-cancellation"
+                hidden
+            >
+                <p>**SAMPLE TEXT:** Cancellations must be made **48 hours** prior to the scheduled service time. Cancellations made within 24 hours will result in the forfeiture of the deposit to cover lost wages and scheduling conflicts. No-shows will be charged the full estimated service price.</p>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <button 
+                class="accordion-item__header" 
+                aria-expanded="false" 
+                aria-controls="policy-billing"
+                id="header-billing"
+            >
+                <h4>Billing & Payment (Sample)</h4>
+                <span class="icon-toggle">+</span>
+            </button>
+            <div 
+                class="accordion-item__content" 
+                id="policy-billing" 
+                aria-labelledby="header-billing"
+                hidden
+            >
+                <p>**SAMPLE TEXT:** Final payment is due immediately upon completion of the service. I accept Zelle, Venmo, or Cash. I do not currently accept credit cards or checks. An invoice will be provided for your records via email.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+---
+
+<section class="contact" id="contact">
+    <h2>Ready to Book? Get in Touch! 📲</h2>
+    <p class="section-subtitle">The quickest way to schedule your service and receive a personalized quote is by filling out the form below. Please allow up to 2 hours for a response during business hours.</p>
+    
+    <div class="google-form-container">
+        <iframe src="https://docs.google.com/forms/d/e/YOUR_GOOGLE_FORM_ID/viewform?embedded=true" 
+            title="Cleaning Booking Form"
+            frameborder="0" marginheight="0" marginwidth="0" loading="lazy">Loading…</iframe>
+    </div>
+
+</section>
+
+<footer>
+    &copy; <span id="currentYear"></span> La Zacatecana. Tidy Your Mind.
+</footer>
+
+<button id="backToTopBtn" aria-label="Back to top">⬆️</button>
+
+<script>
+// ADVANCED JAVASCRIPT: IIFE for encapsulation and strict mode
+(function() {
+    'use strict'; 
+
+    // --- 0. DOM Elements & Initial Setup ---
+    const DOM = {
+        navbar: document.getElementById('navbar'),
+        slides: document.querySelectorAll('.slide'),
+        scrollLinks: document.querySelectorAll('nav .menu a, #bookBtn, .small-book-btn'),
+        heroSection: document.querySelector('.hero'),
+        // FIX: Explicitly target the individual elements inside the sections that need the fade-up effect, 
+        // in addition to the sections themselves.
+        animatedSections: document.querySelectorAll('section:not(.hero), .gallery-item, .service-item, .pricing .card, .policy-box'), 
+        backToTopBtn: document.getElementById('backToTopBtn'),
+        beforeAfterSliders: document.querySelectorAll('.before-after-slider'),
+        navLinks: document.querySelectorAll('nav .menu a'),
+        accordionHeaders: document.querySelectorAll('.accordion-item__header'),
+        currentYearSpan: document.getElementById('currentYear')
+    };
+    
+    // --- 1. UTILITY FUNCTIONS ---
+    function lazyLoadImage(el) {
+        const src = el.dataset.src || el.getAttribute('data-src'); 
+        if (!src || el.classList.contains('loaded')) return;
+
+        const img = new Image();
+        img.src = src;
+        
+        img.onload = () => {
+            if (el.tagName === "DIV" && el.classList.contains('slide')) { 
+                el.style.backgroundImage = `url(${src})`;
+            } else if (el.tagName === "IMG" || !el.tagName) { 
+                el.src = src;
+            }
+            el.classList.add('loaded'); 
+        };
+        img.onerror = () => console.error('Failed to load image:', src);
+    }
+
+
+    // --- 2. MODULE: SlideshowManager ---
+    const SlideshowManager = (function() {
+        let currentSlide = 0;
+        let slideInterval;
+
+        function preloadSlides() {
+            DOM.slides.forEach(slide => lazyLoadImage(slide));
+        }
+        
+        function showSlide(index) {
+            DOM.slides.forEach((s, i) => s.classList.toggle('active', i === index));
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % DOM.slides.length;
+            showSlide(currentSlide);
+        }
+        
+        function start() {
+            if(DOM.slides.length === 0) return;
+            preloadSlides();
+            if (slideInterval) clearInterval(slideInterval);
+            showSlide(currentSlide); 
+            slideInterval = setInterval(nextSlide, 4500); 
+        }
+
+        function handleSwipe(startX, endX) {
+            clearInterval(slideInterval); 
+            const diff = endX - startX;
+            if (Math.abs(diff) > 50) { 
+                currentSlide = (currentSlide + (diff < 0 ? 1 : -1) + DOM.slides.length) % DOM.slides.length;
+                showSlide(currentSlide);
+            }
+            start(); 
+        }
+
+        function setupSwipe() {
+            if(!DOM.heroSection) return;
+            let touchStartX = 0;
+            DOM.heroSection.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            DOM.heroSection.addEventListener('touchend', (e) => {
+                const touchEndX = e.changedTouches[0].screenX;
+                handleSwipe(touchStartX, touchEndX);
+            });
+        }
+        return { start, setupSwipe };
+    })();
+
+
+    // --- 3. MODULE: AccordionManager ---
+    const AccordionManager = (function() {
+        function togglePanel(header) {
+            const contentId = header.getAttribute('aria-controls');
+            const contentPanel = document.getElementById(contentId);
+            const isExpanded = header.getAttribute('aria-expanded') === 'true';
+
+            // Close all other panels for clean UX
+            DOM.accordionHeaders.forEach(otherHeader => {
+                if (otherHeader !== header && otherHeader.getAttribute('aria-expanded') === 'true') {
+                    const otherContentPanel = document.getElementById(otherHeader.getAttribute('aria-controls'));
+                    otherHeader.setAttribute('aria-expanded', 'false');
+                    otherContentPanel.classList.remove('is-open');
+                    otherContentPanel.setAttribute('hidden', 'true');
+                }
+            });
+
+            // Toggle the current panel
+            header.setAttribute('aria-expanded', String(!isExpanded));
+            contentPanel.classList.toggle('is-open');
+            contentPanel.toggleAttribute('hidden');
+        }
+
+        function setup() {
+            DOM.accordionHeaders.forEach(header => {
+                header.addEventListener('click', () => togglePanel(header));
+            });
+        }
+
+        return { setup };
+    })();
+
+
+    // --- 4. MODULE: ScrollManager (Scroll Spy & Animations) ---
+    const ScrollManager = (function() {
+        function handleScroll() {
+            // Navbar shrink
+            const isShrunk = window.scrollY > 50;
+            if(DOM.navbar) DOM.navbar.classList.toggle('shrink', isShrunk);
+
+            // Back to Top button visibility
+            if(DOM.backToTopBtn) DOM.backToTopBtn.style.display = window.scrollY > 300 ? 'block' : 'none';
+
+            // Dynamic Active Nav Link (Scroll Spy)
+            let currentSectionId = '';
+            const navHeight = DOM.navbar ? DOM.navbar.offsetHeight : 0;
+            document.querySelectorAll('section').forEach(section => {
+                const sectionTop = section.offsetTop - (navHeight + 30); 
+                const sectionBottom = sectionTop + section.offsetHeight;
+                if (window.scrollY >= sectionTop && window.scrollY < sectionBottom) {
+                    currentSectionId = section.id;
+                }
+            });
+
+            DOM.navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === currentSectionId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+
+        function setupScrollAnimations() {
+            if (!('IntersectionObserver' in window)) {
+                // Fallback for older browsers
+                DOM.animatedSections.forEach(el => el.classList.add('fade-up'));
+                return;
+            }
+            
+            const observer = new IntersectionObserver((entries, self) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-up');
+                        
+                        // Load images within the section that need JS loading 
+                        entry.target.querySelectorAll('[data-src]:not([loading="lazy"])').forEach(lazyEl => lazyLoadImage(lazyEl));
+                        
+                        self.unobserve(entry.target); 
+                    }
+                });
+            }, { 
+                rootMargin: '0px 0px -10% 0px', 
+                threshold: 0.05 
+            }); 
+
+            // Observe all elements defined in animatedSections
+            DOM.animatedSections.forEach(el => observer.observe(el));
+        }
+
+        function setupSmoothScroll() {
+            DOM.scrollLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        const offsetTop = targetElement.offsetTop - (DOM.navbar ? DOM.navbar.offsetHeight : 0) - 10; 
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        }
+
+        function setup() {
+            window.addEventListener('scroll', handleScroll);
+            if(DOM.backToTopBtn) DOM.backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+            document.addEventListener('DOMContentLoaded', handleScroll); 
+            setupSmoothScroll();
+            setupScrollAnimations();
+        }
+
+        return { setup };
+    })();
+
+
+    // --- 5. MODULE: BeforeAfterSliderManager ---
+    const BeforeAfterSliderManager = (function() {
+        function initBeforeAfterSliders() {
+            DOM.beforeAfterSliders.forEach(slider => {
+                const beforeImage = slider.querySelector('.before-image');
+                const afterImage = slider.querySelector('.after-image');
+                const handle = slider.querySelector('.slider-handle');
+                let isDragging = false;
+                
+                // Set images sources from data attributes
+                beforeImage.setAttribute('src', slider.dataset.before);
+                afterImage.setAttribute('src', slider.dataset.after);
+
+                function updateSlider(clientX) {
+                    const rect = slider.getBoundingClientRect();
+                    let x = clientX - rect.left;
+                    x = Math.max(0, Math.min(x, rect.width));
+
+                    const percentage = (x / rect.width) * 100;
+                    afterImage.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+                    handle.style.left = `${percentage}%`;
+                    handle.setAttribute('aria-valuenow', Math.round(percentage));
+                }
+
+                // Mouse Events
+                handle.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    e.preventDefault(); 
+                });
+                window.addEventListener('mouseup', () => isDragging = false);
+                window.addEventListener('mousemove', (e) => {
+                    if (isDragging) updateSlider(e.clientX);
+                });
+                slider.addEventListener('click', (e) => {
+                    if (!isDragging) updateSlider(e.clientX);
+                });
+
+                // Touch Events
+                handle.addEventListener('touchstart', () => isDragging = true, { passive: true });
+                window.addEventListener('touchend', () => isDragging = false);
+                window.addEventListener('touchmove', (e) => {
+                    if (isDragging && e.touches.length > 0) {
+                        e.preventDefault(); 
+                        updateSlider(e.touches[0].clientX);
+                    }
+                }, { passive: false }); 
+
+                // Keyboard A11y
+                handle.addEventListener('keydown', (e) => {
+                    const step = 5; 
+                    let newPercentage = parseFloat(handle.getAttribute('aria-valuenow'));
+                    if (e.key === 'ArrowLeft' || e.key === 'Left') {
+                        newPercentage = Math.max(0, newPercentage - step);
+                        e.preventDefault();
+                    } else if (e.key === 'ArrowRight' || e.key === 'Right') {
+                        newPercentage = Math.min(100, newPercentage + step);
+                        e.preventDefault();
+                    }
+                    const newX = (newPercentage / 100) * slider.getBoundingClientRect().width;
+                    updateSlider(newX + slider.getBoundingClientRect().left);
+                });
+
+                // Initial setting (start at 50%)
+                requestAnimationFrame(() => {
+                    updateSlider(slider.getBoundingClientRect().width / 2 + slider.getBoundingClientRect().left);
+                });
+            });
+        }
+        return { init: initBeforeAfterSliders };
+    })();
+
+
+    // --- 6. GLOBAL INITIALIZATION ---
+    function init() {
+        // Set current year in footer
+        if (DOM.currentYearSpan) {
+            DOM.currentYearSpan.textContent = new Date().getFullYear();
+        }
+
+        SlideshowManager.start();
+        SlideshowManager.setupSwipe();
+        
+        ScrollManager.setup();
+        AccordionManager.setup();
+        BeforeAfterSliderManager.init();
+        
+        // General Booking Button Handler
+        const bookBtn = document.getElementById('bookBtn');
+        const bookNavBtn = document.getElementById('bookNavBtn');
+        const bookContactSection = document.getElementById('contact');
+
+        if(bookBtn && bookNavBtn) {
+             bookBtn.addEventListener('click', function() {
+                // Smooth scroll to the contact/booking form
+                window.scrollTo({
+                    top: bookContactSection.offsetTop - (DOM.navbar ? DOM.navbar.offsetHeight : 0) - 10,
+                    behavior: 'smooth'
+                });
+            });
+        }
+
+        // Service Card Booking Buttons
+        document.querySelectorAll('.small-book-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                const service = this.getAttribute('data-service');
+                
+                // Scroll to the contact form
+                window.scrollTo({
+                    top: bookContactSection.offsetTop - (DOM.navbar ? DOM.navbar.offsetHeight : 0) - 10,
+                    behavior: 'smooth'
+                });
+                console.log(`User is booking: ${service}.`);
+                alert(`Redirecting to booking form for: ${service}. (In a live site, this would pre-fill the form.)`);
+            });
+        });
+
+    }
+
+    init();
+})();
+</script>
+</body>
+</html>
